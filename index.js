@@ -1,6 +1,7 @@
 import express from "express";
 import cors from "cors";
 import "./db/dbConnect.js";
+import userRoutes from "./routes/userRoutes.js";
 
 const app = express();
 
@@ -14,6 +15,7 @@ app.use(cors({ credentials: true, origin: "http://localhost:3000" }));
 app.use(express.static("public"));
 
 // Routes
+app.use("/users", userRoutes);
 
 app.listen(5000, () => {
   console.log("Servidor rodando na porta 5000!");
