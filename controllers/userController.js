@@ -129,6 +129,20 @@ class UserController {
 
     res.status(200).send(currentUser);
   }
+
+  static async getUserById(req, res) {
+    const id = req.params.id;
+
+    const user = await User.findById(id).select("-password");
+    if (!user) {
+      res.status(422).json({
+        message: "Usuário não encotrado!",
+      });
+      return;
+    }
+
+    res.status(200).json({ user });
+  }
 }
 
 export default UserController;
