@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 // helpers
 import createUserToken from "../helpers/create-user-token.js";
 import getToken from "../helpers/get-token.js";
+import getUserByToken from "../helpers/get-user-by-token.js";
 
 class UserController {
   static async register(req, res) {
@@ -145,9 +146,54 @@ class UserController {
   }
 
   static async editUser(req, res) {
-    res.status(200).json({
-      message: "Update deu certo!",
-    });
+    const id = req.params.id;
+
+    // check if user exists
+    const token = getToken(req);
+    const user = await getUserByToken(token);
+
+    const { name, email, phone, password, confirmpassword } = req.body;
+
+    let image = "";
+
+    // validations
+    if (!name) {
+      res.status(422).json({ message: "O nome é obrigatório!" });
+      return;
+    }
+
+    if (!email) {
+      res.status(422).json({ message: "O e-mail é obrigatório!" });
+      return;
+    }
+
+    // check if email has already taken
+    const userExists = await User.findOne({ email: email });
+
+    if (user.email !== email && userExists) {
+      res.status(422).json({
+        message: "Por favor, utilize outro e-mail!",
+      });
+    }
+
+    user.email = email;
+
+    if (!phone) {
+      res.status(422).json({ message: "O telefone é obrigatório!" });
+      return;
+    }
+
+    if (!password) {
+      res.status(422).json({ message: "A senha é obrigatória!" });
+      return;
+    }
+
+    if (!confirmpassword) {
+      res
+        .status(422)
+        .json({ message: "A confirmação de senha é obrigatória!" });
+      return;
+    }
   }
 }
 
