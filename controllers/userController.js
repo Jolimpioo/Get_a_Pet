@@ -154,7 +154,9 @@ class UserController {
 
     const { name, email, phone, password, confirmpassword } = req.body;
 
-    let image = "";
+    if (req.file) {
+      user.image = req.file.filename;
+    }
 
     // validations
     if (!name) {
@@ -185,29 +187,30 @@ class UserController {
 
     user.phone = phone;
 
-    if (password != confirmpassword) {
-      res.status(422).json({ message: "As senhas não conferem!" });
-      return;
-    } else if (password === confirmpassword && password != null) {
-      // create a (new)password
-      const salt = await bcrypt.genSalt(12);
-      const passwordHash = await bcrypt.hash(password, salt);
-
-      user.password = passwordHash;
-
-      try {
-        // return user update data
-        await User.findOneAndUpdate(
-          { _id: user._id },
-          { $set: user },
-          { new: true }
-        );
-
-        res.status(200).json({ message: "Usuário atualizado com sucesso!" });
-      } catch (error) {
-        res.status(500).json({ message: error });
+    // change password
+    if (password && confirmpassword) {
+      if (password !== confirmpassword) {
+        res.status(422).json({ message: "As senhas não conferem!" });
         return;
       }
+
+      const salt = await bcrypt.genSalt(12);
+      const passwordHash = await bcrypt.hash(password, salt);
+      user.password = passwordHash;
+    }
+
+    try {
+      // return user update data
+      await User.findOneAndUpdate(
+        { _id: user._id },
+        { $set: user },
+        { new: true }
+      );
+
+      res.status(200).json({ message: "Usuário atualizado com sucesso!" });
+    } catch (error) {
+      res.status(500).json({ message: error });
+      return;
     }
   }
 }
