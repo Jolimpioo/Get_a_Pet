@@ -14,4 +14,6 @@ router.post(
   PetController.create
 );
 
+router.get("/", PetController.getAll);
+
 export default router;
