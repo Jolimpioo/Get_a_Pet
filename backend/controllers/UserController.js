@@ -146,16 +146,16 @@ class UserController {
   }
 
   static async editUser(req, res) {
-    const id = req.params.id;
-
-    // check if user exists
     const token = getToken(req);
+
     const user = await getUserByToken(token);
 
     const { name, email, phone, password, confirmpassword } = req.body;
 
+    let image = "";
+
     if (req.file) {
-      user.image = req.file.filename;
+      image = req.file.filename;
     }
 
     // validations
@@ -164,12 +164,14 @@ class UserController {
       return;
     }
 
+    user.name = name;
+
     if (!email) {
       res.status(422).json({ message: "O e-mail é obrigatório!" });
       return;
     }
 
-    // check if email has already taken
+    // check if user exists
     const userExists = await User.findOne({ email: email });
 
     if (user.email !== email && userExists) {
@@ -180,6 +182,11 @@ class UserController {
 
     user.email = email;
 
+    if (image) {
+      const imageName = req.file.filename;
+      user.image = imageName;
+    }
+
     if (!phone) {
       res.status(422).json({ message: "O telefone é obrigatório!" });
       return;
@@ -187,27 +194,36 @@ class UserController {
 
     user.phone = phone;
 
+    // check if password match
+    if (password !== confirmpassword) {
+      res.status(422).json({ message: "As senhas não conferem!" });
+      return;
+    }
     // change password
-    if (password && confirmpassword) {
-      if (password !== confirmpassword) {
-        res.status(422).json({ message: "As senhas não conferem!" });
-        return;
-      }
-
+    else if (password == confirmpassword && password != null) {
+      // creating password
       const salt = await bcrypt.genSalt(12);
-      const passwordHash = await bcrypt.hash(password, salt);
+      const reqPassword = req.body.password;
+
+      const passwordHash = await bcrypt.hash(reqPassword, salt);
+
       user.password = passwordHash;
     }
 
     try {
       // return user update data
-      await User.findOneAndUpdate(
+      const updatedUser = await User.findOneAndUpdate(
         { _id: user._id },
         { $set: user },
         { new: true }
       );
 
-      res.status(200).json({ message: "Usuário atualizado com sucesso!" });
+      res
+        .status(200)
+        .json({
+          message: "Usuário atualizado com sucesso!",
+          data: updatedUser,
+        });
     } catch (error) {
       res.status(500).json({ message: error });
       return;
