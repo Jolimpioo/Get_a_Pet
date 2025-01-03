@@ -24,12 +24,15 @@ const imageStorage = multer.diskStorage({
   },
 });
 
+// Add validation and catch errors for invalid file types
+function fileFilter(req, file, cb) {
+  if (!file.originalname.match(/\.(png|jpg)$/)) {
+    return cb(new Error("Por favor, envie apenas arquivo .jpg ou .png!"));
+  }
+  cb(null, true);
+}
+
 export const imageUpload = multer({
   storage: imageStorage,
-  fileFilter(req, file, cb) {
-    if (!file.originalname.match(/\.(png|jpg)$/)) {
-      return cb(new Error("Por favor, envie apenas arquivo .jpg ou .png!"));
-    }
-    cb(undefined, true);
-  },
+  fileFilter,
 });

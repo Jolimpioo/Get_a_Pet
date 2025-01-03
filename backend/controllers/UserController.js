@@ -147,7 +147,6 @@ class UserController {
 
   static async editUser(req, res) {
     const token = getToken(req);
-
     const user = await getUserByToken(token);
 
     const { name, email, phone, password, confirmpassword } = req.body;
@@ -218,12 +217,10 @@ class UserController {
         { new: true }
       );
 
-      res
-        .status(200)
-        .json({
-          message: "Usuário atualizado com sucesso!",
-          data: updatedUser,
-        });
+      res.status(200).json({
+        message: "Usuário atualizado com sucesso!",
+        data: updatedUser,
+      });
     } catch (error) {
       res.status(500).json({ message: error });
       return;
