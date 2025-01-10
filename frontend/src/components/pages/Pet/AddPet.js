@@ -20,7 +20,7 @@ function AddPet() {
     let msgType = "success";
     const formData = new FormData();
 
-    await Object.keys(pet).forEach((key) => {
+    Object.keys(pet).forEach((key) => {
       if (key === "images") {
         for (let i = 0; i < pet[key].length; i++) {
           formData.append("images", pet[key][i]);

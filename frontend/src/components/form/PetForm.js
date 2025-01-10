@@ -19,7 +19,7 @@ function PetForm({ handleSubmit, petData, btnText }) {
   }
 
   function handleColor(e) {
-    setPet({ ...pet, color: e.target.options[e.target.selectIndex].text });
+    setPet({ ...pet, color: e.target.options[e.target.selectedIndex].text });
   }
 
   function submit(e) {
@@ -69,7 +69,7 @@ function PetForm({ handleSubmit, petData, btnText }) {
         name="age"
         placeholder="Digite a idade"
         handleOnChange={handleChange}
-        value={pet.name || ""}
+        value={pet.age || ""}
       />
       <Input
         text="Peso do Pet"
@@ -77,7 +77,7 @@ function PetForm({ handleSubmit, petData, btnText }) {
         name="weight"
         placeholder="Digite o peso"
         handleOnChange={handleChange}
-        value={pet.name || ""}
+        value={pet.weight || ""}
       />
       <Select
         name="color"
