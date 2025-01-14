@@ -1,13 +1,12 @@
 import api from "../../../utils/api.js";
-
+import Input from "../../form/Input.js";
 import { useState, useEffect } from "react";
 
 import styles from "./Profile.module.css";
 import formStyles from "../../form/Form.module.css";
 
-import Input from "../../form/Input.js";
+/* hooks */
 import RoundedImage from "../../layout/RoundedImage.js";
-
 import useFlashMessage from "../../../hooks/useFlashMessage.js";
 
 function Profile() {
@@ -117,7 +116,7 @@ function Profile() {
           handleOnChange={handleChange}
         />
         <Input
-          text="Confirmação de denha"
+          text="Confirmação de senha"
           type="password"
           name="confirmpassword"
           placeholder="Confirme a sua senha"

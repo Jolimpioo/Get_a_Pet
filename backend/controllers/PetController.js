@@ -220,6 +220,15 @@ class PetController {
       });
     }
 
+    /*if ((!images || images.length === 0) && !pet.images.length === 0) {
+      res.status(422).json({ message: "A imagem é obriogatória!" });
+      return;
+    } else if (images && images.length > 0) {
+      updatedData.images = images.map((image) => image.filename);
+    } else {
+      updatedData.images = pet.images;
+    }*/
+
     await Pet.findByIdAndUpdate(id, updatedData);
 
     res.status(200).json({ message: "Pet atualizado com sucesso!" });
@@ -295,11 +304,9 @@ class PetController {
 
     await Pet.findByIdAndUpdate(id, pet);
 
-    res
-      .status(200)
-      .json({
-        message: "Parabéns! O ciclo de adoção foi finalizado com sucesso!",
-      });
+    res.status(200).json({
+      message: "Parabéns! O ciclo de adoção foi finalizado com sucesso!",
+    });
   }
 }
 
