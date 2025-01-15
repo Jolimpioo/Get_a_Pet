@@ -211,27 +211,16 @@ class PetController {
       updatedData.color = color;
     }
 
-    if (images.length == 0) {
-      res.status(422).json({ message: "A imagem é obrigatória!" });
-    } else {
+    if (images.length > 0) {
       updatedData.images = [];
       images.map((image) => {
         updatedData.images.push(image.filename);
       });
     }
 
-    /*if ((!images || images.length === 0) && !pet.images.length === 0) {
-      res.status(422).json({ message: "A imagem é obriogatória!" });
-      return;
-    } else if (images && images.length > 0) {
-      updatedData.images = images.map((image) => image.filename);
-    } else {
-      updatedData.images = pet.images;
-    }*/
-
     await Pet.findByIdAndUpdate(id, updatedData);
 
-    res.status(200).json({ message: "Pet atualizado com sucesso!" });
+    res.status(200).json({ pet: pet, message: "Pet atualizado com sucesso!" });
   }
 
   static async schedule(req, res) {
