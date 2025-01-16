@@ -1,9 +1,9 @@
-import Pet from "../models/Pet.js";
-import mongoose from "mongoose";
+import Pet from '../models/Pet.js';
+import mongoose from 'mongoose';
 
 // helpers
-import getToken from "../helpers/get-token.js";
-import getUserByToken from "../helpers/get-user-by-token.js";
+import getToken from '../helpers/get-token.js';
+import getUserByToken from '../helpers/get-user-by-token.js';
 
 const ObjectId = mongoose.Types.ObjectId;
 
@@ -18,23 +18,23 @@ class PetController {
 
     // validations
     if (!name) {
-      res.status(422).json({ message: "O nome é obrigatório!" });
+      res.status(422).json({ message: 'O nome é obrigatório!' });
     }
 
     if (!age) {
-      res.status(422).json({ message: "A idade é obrigatória!" });
+      res.status(422).json({ message: 'A idade é obrigatória!' });
     }
 
     if (!weight) {
-      res.status(422).json({ message: "O peso é obrigatório!" });
+      res.status(422).json({ message: 'O peso é obrigatório!' });
     }
 
     if (!color) {
-      res.status(422).json({ message: "A cor é obrigatória!" });
+      res.status(422).json({ message: 'A cor é obrigatória!' });
     }
 
     if (images.length == 0) {
-      res.status(422).json({ message: "A imagem é obrigatória!" });
+      res.status(422).json({ message: 'A imagem é obrigatória!' });
     }
 
     // get pet owner
@@ -64,7 +64,7 @@ class PetController {
     try {
       const newPet = await pet.save();
       res.status(201).json({
-        message: "Pet cadastrado com sucesso!",
+        message: 'Pet cadastrado com sucesso!',
         newPet,
       });
     } catch (error) {
@@ -73,7 +73,7 @@ class PetController {
   }
 
   static async getAll(req, res) {
-    const pets = await Pet.find().sort("-createdAt");
+    const pets = await Pet.find().sort('-createdAt');
 
     res.status(200).json({ pets: pets });
   }
@@ -83,7 +83,7 @@ class PetController {
     const token = getToken(req);
     const user = await getUserByToken(token);
 
-    const pets = await Pet.find({ "user._id": user._id }).sort("-createdAt");
+    const pets = await Pet.find({ 'user._id': user._id }).sort('-createdAt');
 
     res.status(200).json({ pets });
   }
@@ -93,7 +93,7 @@ class PetController {
     const token = getToken(req);
     const user = await getUserByToken(token);
 
-    const pets = await Pet.find({ "adopter._id": user._id }).sort("-createdAt");
+    const pets = await Pet.find({ 'adopter._id': user._id }).sort('-createdAt');
 
     res.status(200).json({ pets });
   }
@@ -103,7 +103,7 @@ class PetController {
 
     // check if id is valid
     if (!ObjectId.isValid(id)) {
-      res.status(422).json({ message: "ID inválido!" });
+      res.status(422).json({ message: 'ID inválido!' });
       return;
     }
 
@@ -111,7 +111,7 @@ class PetController {
     const pet = await Pet.findOne({ _id: id });
 
     if (!pet) {
-      res.status(404).json({ message: "Pet não encontrado!" });
+      res.status(404).json({ message: 'Pet não encontrado!' });
     }
 
     res.status(200).json({
@@ -124,7 +124,7 @@ class PetController {
 
     // check if id is valid
     if (!ObjectId.isValid(id)) {
-      res.status(422).json({ message: "ID inválido!" });
+      res.status(422).json({ message: 'ID inválido!' });
       return;
     }
 
@@ -132,7 +132,7 @@ class PetController {
     const pet = await Pet.findById(id);
 
     if (!pet) {
-      res.status(404).json({ message: "Pet não encontrado!" });
+      res.status(404).json({ message: 'Pet não encontrado!' });
       return;
     }
 
@@ -144,12 +144,12 @@ class PetController {
     if (pet.user._id.toString() !== user._id.toString()) {
       res.status(422).json({
         message:
-          "Houve um problema em processar a sua solicitação, tente novamente mais tarde!",
+          'Houve um problema em processar a sua solicitação, tente novamente mais tarde!',
       });
       return;
     }
     await Pet.findByIdAndDelete(id);
-    res.status(200).json({ message: "Pet removido com sucesso!" });
+    res.status(200).json({ message: 'Pet removido com sucesso!' });
   }
 
   static async updatePet(req, res) {
@@ -159,13 +159,13 @@ class PetController {
 
     const images = req.files;
 
-    const updatedData = {};
+    const updateData = {};
 
     // check if pet exists
     const pet = await Pet.findById(id);
 
     if (!pet) {
-      res.status(404).json({ message: "Pet não encontrado!" });
+      res.status(404).json({ message: 'Pet não encontrado!' });
       return;
     }
 
@@ -177,50 +177,50 @@ class PetController {
     if (pet.user._id.toString() !== user._id.toString()) {
       res.status(422).json({
         message:
-          "Houve um problema em processar a sua solicitação, tente novamente mais tarde!",
+          'Houve um problema em processar a sua solicitação, tente novamente mais tarde!',
       });
       return;
     }
 
     // validations
     if (!name) {
-      res.status(422).json({ message: "O nome é obrigatório!" });
+      res.status(422).json({ message: 'O nome é obrigatório!' });
       return;
     } else {
-      updatedData.name = name;
+      updateData.name = name;
     }
 
     if (!age) {
-      res.status(422).json({ message: "A idade é obrigatória!" });
+      res.status(422).json({ message: 'A idade é obrigatória!' });
       return;
     } else {
-      updatedData.age = age;
+      updateData.age = age;
     }
 
     if (!weight) {
-      res.status(422).json({ message: "O peso é obrigatório!" });
+      res.status(422).json({ message: 'O peso é obrigatório!' });
       return;
     } else {
-      updatedData.weight = weight;
+      updateData.weight = weight;
     }
 
     if (!color) {
-      res.status(422).json({ message: "A cor é obrigatória!" });
+      res.status(422).json({ message: 'A cor é obrigatória!' });
       return;
     } else {
-      updatedData.color = color;
+      updateData.color = color;
     }
 
     if (images.length > 0) {
-      updatedData.images = [];
+      updateData.images = [];
       images.map((image) => {
-        updatedData.images.push(image.filename);
+        updateData.images.push(image.filename);
       });
     }
 
-    await Pet.findByIdAndUpdate(id, updatedData);
+    await Pet.findByIdAndUpdate(id, updateData);
 
-    res.status(200).json({ pet: pet, message: "Pet atualizado com sucesso!" });
+    res.status(200).json({ pet: pet, message: 'Pet atualizado com sucesso!' });
   }
 
   static async schedule(req, res) {
@@ -230,7 +230,7 @@ class PetController {
     const pet = await Pet.findById(id);
 
     if (!pet) {
-      res.status(404).json({ message: "Pet não encontrado!" });
+      res.status(404).json({ message: 'Pet não encontrado!' });
       return;
     }
 
@@ -240,15 +240,16 @@ class PetController {
 
     if (pet.user._id.equals(user._id)) {
       res.status(422).json({
-        message: "Você não pode agendar uma visita com o seu próprio Pet!",
+        message: 'Você não pode agendar uma visita com o seu próprio Pet!',
       });
+      return;
     }
 
     //check if user gas already scheduled a visit
     if (pet.adopter) {
       if (pet.adopter._id.equals(user._id)) {
         res.status(422).json({
-          message: "Você já agendou uma visita para este Pet!",
+          message: 'Você já agendou uma visita para este Pet!',
         });
         return;
       }
@@ -273,7 +274,7 @@ class PetController {
     const pet = await Pet.findById(id);
 
     if (!pet) {
-      res.status(404).json({ message: "Pet não encontrado!" });
+      res.status(404).json({ message: 'Pet não encontrado!' });
       return;
     }
 
@@ -285,7 +286,7 @@ class PetController {
     if (pet.user._id.toString() !== user._id.toString()) {
       res.status(422).json({
         message:
-          "Houve um problema em processar a sua solicitação, tente novamente mais tarde!",
+          'Houve um problema em processar a sua solicitação, tente novamente mais tarde!',
       });
       return;
     }
@@ -294,7 +295,7 @@ class PetController {
     await Pet.findByIdAndUpdate(id, pet);
 
     res.status(200).json({
-      message: "Parabéns! O ciclo de adoção foi finalizado com sucesso!",
+      message: 'Parabéns! O ciclo de adoção foi finalizado com sucesso!',
     });
   }
 }

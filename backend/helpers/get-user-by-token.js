@@ -1,13 +1,13 @@
-import jwt from "jsonwebtoken";
-import User from "../models/User.js";
+import jwt from 'jsonwebtoken';
+import User from '../models/User.js';
 
 // get user by jwt token
 const getUserByToken = async (token) => {
   if (!token) {
-    return res.status(401).json({ message: "Acesso Negado!" });
+    return res.status(401).json({ message: 'Acesso Negado!' });
   }
 
-  const decoded = jwt.verify(token, "nossosecret");
+  const decoded = jwt.verify(token, 'nossosecret');
 
   const userId = decoded.id;
 
