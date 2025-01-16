@@ -1,22 +1,23 @@
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 
 /* components */
-import Navbar from "./components/layout/Navbar.js";
-import Footer from "./components/layout/Footer.js";
-import Container from "./components/layout/Container.js";
-import Message from "./components/layout/Message.js";
+import Navbar from './components/layout/Navbar.js';
+import Footer from './components/layout/Footer.js';
+import Container from './components/layout/Container.js';
+import Message from './components/layout/Message.js';
 
 /* pages */
-import Login from "./components/pages/Auth/Login.js";
-import Register from "./components/pages/Auth/Register.js";
-import Home from "./components/pages/Home.js";
-import Profile from "./components/pages/User/Profile.js";
-import MyPets from "./components/pages/Pet/MyPets.js";
-import AddPet from "./components/pages/Pet/AddPet.js";
-import EditPet from "./components/pages/Pet/EditPet.js";
+import Login from './components/pages/Auth/Login.js';
+import Register from './components/pages/Auth/Register.js';
+import Home from './components/pages/Home.js';
+import Profile from './components/pages/User/Profile.js';
+import MyPets from './components/pages/Pet/MyPets.js';
+import AddPet from './components/pages/Pet/AddPet.js';
+import PetDetails from './components/pages/Pet/PetDetails.js';
+import EditPet from './components/pages/Pet/EditPet.js';
 
 /* context */
-import { UserProvider } from "./context/UserContext.js";
+import { UserProvider } from './context/UserContext.js';
 
 function App() {
   return (
@@ -31,6 +32,7 @@ function App() {
             <Route path="/user/profile" element={<Profile />} />
             <Route path="/pet/mypets" element={<MyPets />} />
             <Route path="/pet/add" element={<AddPet />} />
+            <Route path="/pet/:id" element={<PetDetails />} />
             <Route path="/pet/edit/:id" element={<EditPet />} />
             <Route path="/" element={<Home />} />
           </Routes>
