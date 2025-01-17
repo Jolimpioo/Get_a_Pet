@@ -1,21 +1,21 @@
-import api from "../../../utils/api.js";
-import styles from "./Dashboard.module.css";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import api from '../../../utils/api.js';
+import styles from './Dashboard.module.css';
+import { useState, useEffect } from 'react';
+import { Link } from 'react-router-dom';
 
-import RoundedImage from "../../layout/RoundedImage.js";
+import RoundedImage from '../../layout/RoundedImage.js';
 
 /* hooks */
-import useFlashMessage from "../../../hooks/useFlashMessage.js";
+import useFlashMessage from '../../../hooks/useFlashMessage.js';
 
 function MyPets() {
   const [pets, setPets] = useState([]);
-  const [token] = useState(localStorage.getItem("token") || "");
+  const [token] = useState(localStorage.getItem('token') || '');
   const { setFlashMessage } = useFlashMessage();
 
   useEffect(() => {
     api
-      .get("/pets/mypets", {
+      .get('/pets/mypets', {
         headers: {
           Authorization: `Bearer ${JSON.parse(token)}`,
         },
@@ -26,7 +26,7 @@ function MyPets() {
   }, [token]);
 
   async function removePet(id) {
-    let msgType = "success";
+    let msgType = 'success';
 
     const data = await api
       .delete(`/pets/${id}`, {
@@ -40,7 +40,7 @@ function MyPets() {
         return response.data;
       })
       .catch((err) => {
-        msgType = "error";
+        msgType = 'error';
         return err.response.data;
       });
 
@@ -49,7 +49,7 @@ function MyPets() {
   return (
     <section>
       <div className={styles.petlist_header}>
-        <h1>MyPets</h1>
+        <h1>Meus Pets</h1>
         <Link to="/pet/add">Cadastrar Pet</Link>
       </div>
       <div className={styles.petlist_container}>

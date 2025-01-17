@@ -1,12 +1,12 @@
-import { Link } from "react-router-dom";
-import { useContext } from "react";
+import { Link } from 'react-router-dom';
+import { useContext } from 'react';
 
-import styles from "./Navbar.module.css";
+import styles from './Navbar.module.css';
 
-import Logo from "../../assets/img/logo.png";
+import Logo from '../../assets/img/logo.png';
 
 /* context */
-import { Context } from "../../context/UserContext.js";
+import { Context } from '../../context/UserContext.js';
 
 function Navbar() {
   const { authenticated, logout } = useContext(Context);
@@ -23,6 +23,9 @@ function Navbar() {
         </li>
         {authenticated ? (
           <>
+            <li>
+              <Link to="/pet/myadoptions">Minhas Adoções</Link>
+            </li>
             <li>
               <Link to="/pet/mypets">Meus Pets</Link>
             </li>
